@@ -1,5 +1,6 @@
 import React from "react";
 import { SearchResult } from "../model";
+import UrlList from "./UrlList";
 
 interface Props {
   searchResult: SearchResult | undefined;
@@ -21,11 +22,20 @@ let getMessage = (searchResult: SearchResult | undefined) => {
   }
 };
 
+let getSearchUrls = (searchResult: SearchResult | undefined) => {
+  if (searchResult) {
+    return <UrlList urls={searchResult.urls} />;
+  } else {
+    return [];
+  }
+};
+
 const SearchList: React.FC<Props> = ({ searchResult }) => {
   return (
-    <div className="border border-dark mt-3 text-center">
+    <div className="border border-dark m-5 text-center">
       <h2 className="m-3">{getSearchTerm(searchResult)}</h2>
       <p className="m-3">{getMessage(searchResult)}</p>
+      <div className="m-3">{getSearchUrls(searchResult)}</div>
     </div>
   );
 };

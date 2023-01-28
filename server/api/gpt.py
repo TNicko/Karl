@@ -23,3 +23,4 @@ def gpt_response(prompt: str, max_tokens: int = 500) -> str:
 
     message = response.choices[0].text
     return message
+

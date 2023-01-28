@@ -21,13 +21,19 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getSearchResults(request):
-
+    # Get search query
     searchTerm = request.query_params['q']
-    message = gpt.gpt_response(searchTerm)
+
+    # Get search results from google
+    urls = search.get_search_items(searchTerm)
+
+    # Get response from GPT-3
+    gpt_prompt = f"Summarize what is mentioned in following link: {urls[0]}"
+    message = gpt.gpt_response(gpt_prompt)
 
     data = {
         'searchTerm': searchTerm,
-        'message': message
+        'message': message,
+        'urls': urls,
     }
-
     return Response(data)
