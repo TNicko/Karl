@@ -1,23 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 .App {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: antiquewhite;
   align-items: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--background);
 }
 
 .heading {
   text-transform: uppercase;
   text-decoration: double;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 40px;
   margin: 20px 0;
   z-index: 1;
   text-align: center;
+  color: var(--text-primary);
+}
+
+.search-list {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 @media (max-width: 768px) {

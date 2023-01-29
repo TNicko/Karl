@@ -20,19 +20,28 @@ const SearchBar: React.FC<Props> = ({
     <Paper
       component="form"
       onSubmit={handleAdd}
-      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
+      sx={{
+        backgroundColor: "var(--input-primary)",
+        p: "2px 4px",
+        display: "flex",
+        alignItems: "center",
+        width: 400,
+      }}
     >
       <InputBase
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ color: "var(--text-primary)", ml: 1, flex: 1 }}
         placeholder="Search"
         inputProps={{ "aria-label": "search" }}
       />
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Divider
+        sx={{ borderColor: "var(--text-primary)", height: 28, m: 0.5 }}
+        orientation="vertical"
+      />
       <IconButton
         type="button"
-        sx={{ p: "10px" }}
+        sx={{ color: "var(--text-primary)", p: "10px" }}
         aria-label="search"
         onClick={handleAdd}
       >

@@ -18,18 +18,14 @@ def get_search_items(search_string: str, num_items: int = 1) -> list:
     :Returns:
         - items: The html elements of the search items.
     """
-    try:
 
-        driver = webdriver.Remote(command_executor="http://172.20.0.2:4444", options=options)
-        search_string = search_string.replace(" ", "+")
-        driver.get(f"https://www.google.com/search?q={search_string}")
-        items = driver.find_elements(by=By.XPATH, value=SEARCH_ITEM_XPATH)
-        urls = get_urls(items[:num_items])
+    driver = webdriver.Remote(command_executor="http://172.20.0.3:4444", options=options)
+    search_string = search_string.replace(" ", "+")
+    driver.get(f"https://www.google.com/search?q={search_string}")
+    items = driver.find_elements(by=By.XPATH, value=SEARCH_ITEM_XPATH)
+    urls = get_urls(items[:num_items])
+    driver.quit()
 
-    except Exception as e:
-        print(f"An error occurred while scraping the site: {e}")
-    finally:
-        driver.quit()
 
     return urls
 

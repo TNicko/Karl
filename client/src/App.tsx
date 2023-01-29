@@ -3,12 +3,24 @@ import "./App.css";
 import SearchBar from "./components/SearchBar";
 import SearchList from "./components/SearchList";
 import { SearchResult } from "./model";
+import { DefaultDark, Theme } from "./ThemeContext";
+import useLocalStorage from "use-local-storage";
+import Navbar from "./components/Navbar";
 
 const App: React.FC = () => {
+  const [theme, setTheme] = useLocalStorage<Theme>(
+    "theme",
+    DefaultDark ? Theme.dark : Theme.light
+  );
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResult, setSearchResult] = useState<SearchResult | undefined>(
     undefined
   );
+
+  const toggleTheme = () => {
+    setTheme((curr) => (curr === Theme.light ? Theme.dark : Theme.light));
+  };
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +35,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
-      <span className="heading font-weight-bold">K A R L</span>
+    <div className="App" data-theme={theme}>
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <div className="mt-5 d-flex align-items-center">
+        <span className="heading font-weight-bold">K A R L</span>
+      </div>
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
