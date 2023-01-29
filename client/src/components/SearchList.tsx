@@ -1,5 +1,6 @@
 import React from "react";
 import { SearchResult } from "../model";
+import TextAnimation from "./animations/TextAnimation";
 import UrlList from "./UrlList";
 
 interface Props {
@@ -34,7 +35,7 @@ const SearchList: React.FC<Props> = ({ searchResult }) => {
   return (
     <div className="search-list m-5 text-center">
       <h2 className="m-3">{getSearchTerm(searchResult)}</h2>
-      <p className="m-3">{getMessage(searchResult)}</p>
+      <TextAnimation message={getMessage(searchResult)} />
       <div className="m-3">{getSearchUrls(searchResult)}</div>
     </div>
   );

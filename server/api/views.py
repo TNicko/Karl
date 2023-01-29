@@ -30,6 +30,8 @@ def getSearchResults(request):
     # Get response from GPT-3
     gpt_prompt = f"Summarize what is mentioned in following link: {urls[0]}"
     message = gpt.gpt_response(gpt_prompt)
+    message = message.strip()
+    print(message)
 
     data = {
         'searchTerm': searchTerm,

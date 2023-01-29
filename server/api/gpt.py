@@ -20,7 +20,18 @@ def gpt_response(prompt: str, max_tokens: int = 500) -> str:
         stop=None,
         temperature=0.5,
     )
-
     message = response.choices[0].text
+    message = remove_gptresponse_newline(message)
     return message
 
+def remove_gptresponse_newline(message: str) -> str:
+    """
+    Removes the first part of the gpt response that contains strange text.
+    GPT message starts with "*/n/n" (I dont really understand why lol).
+    """
+    index = message.find("\n\n")
+    # 20 is an arbitrary number, but it works for now.
+    if index != -1 | index < 20:
+        message = message[index + 2 :]
+
+    return message

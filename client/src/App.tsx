@@ -6,6 +6,7 @@ import { SearchResult } from "./model";
 import { DefaultDark, Theme } from "./ThemeContext";
 import useLocalStorage from "use-local-storage";
 import Navbar from "./components/Navbar";
+import TitleAnimation from "./components/animations/TitleAnimation";
 
 const App: React.FC = () => {
   const [theme, setTheme] = useLocalStorage<Theme>(
@@ -24,6 +25,7 @@ const App: React.FC = () => {
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("searchTerm: ", searchTerm);
 
     if (searchTerm) {
       let response = await fetch(
@@ -38,7 +40,9 @@ const App: React.FC = () => {
     <div className="App" data-theme={theme}>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <div className="mt-5 d-flex align-items-center">
-        <span className="heading font-weight-bold">K A R L</span>
+        <span className="title font-weight-bold">
+          <TitleAnimation />
+        </span>
       </div>
       <SearchBar
         searchTerm={searchTerm}
