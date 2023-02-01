@@ -14,6 +14,19 @@ venv/
 # Docker
 docker-compose.yml
 
+# Scrapy project
+build/
+dist/
+server/scraper/*.egg-info/
+server/scraper/eggs/
+server/scraper/logs
+server/scraper/*.pyc
+server/scraper/*.pyo
+server/scraper/build/
+server/scraper/dist/
+server/scraper/dbs
+server/scraper/*/dbs
+
 # Client (react) files
 # --------------------
 

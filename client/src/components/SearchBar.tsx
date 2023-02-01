@@ -8,30 +8,31 @@ import SearchIcon from "@mui/icons-material/Search";
 interface Props {
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  handleAdd: (e: React.FormEvent) => void;
+  handleSearch: (e: React.FormEvent) => void;
 }
 
 const SearchBar: React.FC<Props> = ({
   searchTerm,
   setSearchTerm,
-  handleAdd,
+  handleSearch,
 }) => {
   return (
     <Paper
       component="form"
-      onSubmit={handleAdd}
+      onSubmit={handleSearch}
       sx={{
         backgroundColor: "var(--input-primary)",
         p: "2px 4px",
         display: "flex",
         alignItems: "center",
         width: 400,
+        borderRadius: 10,
       }}
     >
       <InputBase
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ color: "var(--text-primary)", ml: 1, flex: 1 }}
+        sx={{ color: "var(--text-primary)", padding: 1, ml: 1, flex: 1 }}
         placeholder="Search"
         inputProps={{ "aria-label": "search" }}
       />
@@ -43,7 +44,7 @@ const SearchBar: React.FC<Props> = ({
         type="button"
         sx={{ color: "var(--text-primary)", p: "10px" }}
         aria-label="search"
-        onClick={handleAdd}
+        onClick={handleSearch}
       >
         <SearchIcon />
       </IconButton>
