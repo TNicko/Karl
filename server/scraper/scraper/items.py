@@ -4,8 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 from scrapy_djangoitem import DjangoItem
-# from api.models import Session
+from api.models import Session
 
-class ScraperItem(DjangoItem):
-    # django_item = Session
-    pass
+class SessionItem(DjangoItem):
+    django_model = Session

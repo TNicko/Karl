@@ -40,7 +40,7 @@ def getSearchResults(request):
         
         try:
             # Schedule crawling task
-            task_id = scrapyd.schedule('default', 'basic', settings=settings, url=search_url, domain='google.com')
+            task_id = scrapyd.schedule('default', 'google_search', settings=settings, url=search_url, domain='google.com')
             session.status = 'running'
             session.task_id = task_id
             session.save()
@@ -75,9 +75,10 @@ def getSearchResults(request):
                 urls = ['https://dummyurl.com'] 
                 search_data = {
                     'searchTerm': session.title,
-                    'message': message,
+                    'message': session.content,
                     'urls': urls,
                 }
+                print(session.content)
                 return Response({'status': status, 'search_data': search_data})
             except Exception as e:
                 return Response({'error': str(e)})

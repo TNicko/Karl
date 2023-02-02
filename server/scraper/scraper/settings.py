@@ -11,9 +11,9 @@ import os
 import sys
 import django
 
-# sys.path.append(os.path.dirname(os.path.abspath('.')))
-# os.environ['DJANGO_SETTINGS_MODULE'] = 'server.settings'
-# django.setup()
+sys.path.append(os.path.dirname(os.path.abspath('.')))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'karl.settings'
+django.setup()
 
 BOT_NAME = 'scraper'
 
@@ -25,7 +25,7 @@ NEWSPIDER_MODULE = 'scraper.spiders'
 #USER_AGENT = 'scraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
