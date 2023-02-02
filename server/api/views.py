@@ -67,8 +67,18 @@ def getSearchResults(request):
         if status == 'finished':
             try:
                 session = Session.objects.get(task_id=task_id)
+                session.status = status
+                session.save()
 
-                return Response({'status': status, 'content': 'This is the scraped data'})
+                # DUMMY DATA
+                message = 'This is the scraped data' 
+                urls = ['https://dummyurl.com'] 
+                search_data = {
+                    'searchTerm': session.title,
+                    'message': message,
+                    'urls': urls,
+                }
+                return Response({'status': status, 'search_data': search_data})
             except Exception as e:
                 return Response({'error': str(e)})
         else:

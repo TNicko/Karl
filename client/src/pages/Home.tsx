@@ -2,11 +2,11 @@ import React from "react";
 import TitleAnimation from "../components/animations/TitleAnimation";
 import SearchBar from "../components/SearchBar";
 import SearchList from "../components/SearchList";
-import { SearchResult } from "../model";
+import { SearchData } from "../model";
 
 interface State {
   searchTerm: string;
-  searchResult: SearchResult | undefined;
+  searchData: SearchData | undefined;
   crawlingStatus: string | null;
   taskId: string | null;
   sessionId: string | null;
@@ -15,7 +15,7 @@ interface State {
 class Home extends React.Component {
   state: State = {
     searchTerm: "",
-    searchResult: undefined,
+    searchData: undefined,
     crawlingStatus: null,
     taskId: null,
     sessionId: null,
@@ -58,8 +58,16 @@ class Home extends React.Component {
         crawlingStatus: data.status,
       });
       if (data.status === "finished") {
+        clearInterval(this.statusInterval);
         this.setState({
-          searchResult: data.content,
+          searchData: data.search_data,
+        });
+      } else if (data.error) {
+        clearInterval(this.statusInterval);
+        alert(data.error);
+      } else if (data.status) {
+        this.setState({
+          crawlingStatus: data.status,
         });
       }
     }
@@ -78,7 +86,7 @@ class Home extends React.Component {
           handleSearch={this.handleSearch}
           setSearchTerm={(searchTerm) => this.setState({ searchTerm })}
         />
-        <SearchList searchResult={this.state.searchResult} />
+        <SearchList searchData={this.state.searchData} />
       </div>
     );
   }
