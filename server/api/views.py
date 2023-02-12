@@ -53,6 +53,8 @@ def getSearchResults(request):
         return Response({'status': session.status, 'session_id': session.id, 'task_id': task_id, 'session_id': session.id})
     
     if request.method == 'GET':
+
+        print("get request....")
         
         task_id = request.GET.get('task_id', None)
 
@@ -70,35 +72,34 @@ def getSearchResults(request):
                 session.status = status
                 session.save()
 
-                # DUMMY DATA
-                message = 'This is the scraped data' 
-                urls = ['https://dummyurl.com'] 
+                urls = convert_to_list(session.content)
+
+                print("urls: ", urls)
+
+                # Get response from GPT-3
+                gpt_prompt = f"Summarize what is mentioned in following links: {urls}"
+                message = gpt.gpt_response(gpt_prompt)
+                message = message.strip()
+
                 search_data = {
                     'searchTerm': session.title,
-                    'message': session.content,
+                    'message': message,
                     'urls': urls,
                 }
-                print(session.content)
                 return Response({'status': status, 'search_data': search_data})
             except Exception as e:
-                return Response({'error': str(e)})
+                return Response({'status': status})
         else:
             return Response({'status': status})
 
-
-
-        # # !!! DUMMY DATA !!!
-        # urls = ['https://www.google.com/search?q=hello+world']
-
-        # # Get response from GPT-3
-        # gpt_prompt = f"Summarize what is mentioned in following link: {urls[0]}"
-        # message = gpt.gpt_response(gpt_prompt)
-        # message = message.strip()
-        # print(message)
-
-        # data = {
-        #     'searchTerm': searchTerm,
-        #     'message': message,
-        #     'urls': urls,
-        # }
-        # return Response(data)
+def convert_to_list(s: str) -> list:
+    """Convert string to list
+    Args: 
+        s (str): string to be converted e.g. "['url1', 'url2']"
+    Returns:
+        list: list of urls
+    """
+    if s.startswith('[') and s.endswith(']'):
+        s = s[1:-1]
+        url_list = [url.strip().strip("'") for url in s.split(',')]
+        return url_list

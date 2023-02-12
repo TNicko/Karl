@@ -39,13 +39,14 @@ class Home extends React.Component {
           sessionId: data.session_id,
         },
         () => {
-          this.statusInterval = setInterval(this.checkCrawlingStatus, 2000);
+          this.statusInterval = setInterval(this.checkCrawlingStatus, 1000);
         }
       );
     }
   };
 
   checkCrawlingStatus = async () => {
+    clearInterval(this.statusInterval);
     if (this.state.taskId) {
       let response = await fetch(
         `http://localhost:8000/api/search/?task_id=${this.state.taskId}`,
@@ -58,17 +59,16 @@ class Home extends React.Component {
         crawlingStatus: data.status,
       });
       if (data.status === "finished") {
-        clearInterval(this.statusInterval);
         this.setState({
           searchData: data.search_data,
         });
       } else if (data.error) {
-        clearInterval(this.statusInterval);
         alert(data.error);
       } else if (data.status) {
         this.setState({
           crawlingStatus: data.status,
         });
+        this.statusInterval = setInterval(this.checkCrawlingStatus, 1000);
       }
     }
   };

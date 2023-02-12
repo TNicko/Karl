@@ -16,4 +16,3 @@ class ScraperPipeline(object):
         )
 
         return item
-
