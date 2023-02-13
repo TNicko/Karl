@@ -19,3 +19,10 @@ class Session(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
+class WebsitePage(models.Model):
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    url = models.CharField(max_length=300, unique=True, blank=False, null=False)
+    content = models.TextField(blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
