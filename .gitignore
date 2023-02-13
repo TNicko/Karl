@@ -26,6 +26,7 @@ server/scraper/build/
 server/scraper/dist/
 server/scraper/dbs
 server/scraper/*/dbs
+*.pid
 
 # Client (react) files
 # --------------------
