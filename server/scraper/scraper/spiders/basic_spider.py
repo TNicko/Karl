@@ -1,5 +1,5 @@
 import scrapy
-from scraper.items import SessionItem
+from scraper.items import SessionItem, WebsitePageItem
 import os
 import re
 # from selenium import webdriver
@@ -30,17 +30,31 @@ class BasicSpider(scrapy.Spider):
             url = self.get_google_url(item.xpath('@href').extract()[0])
             urls.append(url)
         return urls
+    
 
     def parse(self, response):
-        # driver = webdriver.Firefox()
-        # driver.get(response.url)
-        # html = driver.page_source
-        # driver.quit()
-
-        item = SessionItem()
-        item['task_id'] = self.task_id
+        urls = self.get_urls(response=response, num_items=2)
+        print('URLS = ', urls)
+        session_item = SessionItem()
+        session_item['task_id'] = self.task_id
         # item['title'] = next(iter(filter(bool,[e.strip() for e in response.xpath('//title//text()').extract()])),'No Title')
-        item['search_url'] = self.url
-        item['content'] = self.get_urls(response=response, num_items=2)
-        return item
+        session_item['search_url'] = self.url
+        session_item['content'] = urls
+
+            
+        yield {'session_item': session_item}
+
+        for result in urls:
+            self.allowed_domains.append(result)
+            item = WebsitePageItem()
+            item['url'] = result
+            yield scrapy.Request(result, callback=self.parse_result, dont_filter=True, cb_kwargs={'item': item})
+
+        # result_dict = {'items': items, 'session_item': session_item}
+
+        # return result_dict
+
+    def parse_result(self, response, item):
+        item['content'] = response.text
+        yield {'webpage_item': item, 'task_id': self.task_id}
 

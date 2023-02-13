@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Session
-from .serializers import SessionSerializer
+from .models import Session, WebsitePage
+from .serializers import SessionSerializer, WebsitePageSerializer
 from scrapyd_api import ScrapydAPI
 import api.gpt as gpt
 
@@ -12,9 +12,13 @@ def get_search_url(searchTerm: str) -> str:
 
 @api_view(['GET'])
 def getRoutes(request):
-    sessions = Session.objects.all()
-    sessions_serializer = SessionSerializer(sessions, many=True)
-    return Response(sessions_serializer.data)
+    # sessions = Session.objects.all()
+    # sessions_serializer = SessionSerializer(sessions, many=True)
+    # return Response(sessions_serializer.data)
+
+    webpages = WebsitePage.objects.all()
+    webpages_serializer = WebsitePageSerializer(webpages, many=True)
+    return Response(webpages_serializer.data)
 
 @api_view(['POST', 'GET'])
 def getSearchResults(request):
@@ -52,45 +56,45 @@ def getSearchResults(request):
         
         return Response({'status': session.status, 'session_id': session.id, 'task_id': task_id, 'session_id': session.id})
     
-    if request.method == 'GET':
+    # if request.method == 'GET':
 
-        print("get request....")
+    #     print("get request....")
         
-        task_id = request.GET.get('task_id', None)
+    #     task_id = request.GET.get('task_id', None)
 
-        if not task_id:
-            return Response({'error': 'task_id is missing'})
+    #     if not task_id:
+    #         return Response({'error': 'task_id is missing'})
         
-        # Connect scrapyd service
-        scrapyd = ScrapydAPI('http://scrapyd:6800/')
+    #     # Connect scrapyd service
+    #     scrapyd = ScrapydAPI('http://scrapyd:6800/')
         
-        # Check status of crawling task
-        status = scrapyd.job_status('default', task_id)
-        if status == 'finished':
-            try:
-                session = Session.objects.get(task_id=task_id)
-                session.status = status
-                session.save()
+    #     # Check status of crawling task
+    #     status = scrapyd.job_status('default', task_id)
+    #     if status == 'finished':
+    #         try:
+    #             session = Session.objects.get(task_id=task_id)
+    #             session.status = status
+    #             session.save()
 
-                urls = convert_to_list(session.content)
+    #             urls = convert_to_list(session.content)
 
-                print("urls: ", urls)
+    #             print("urls: ", urls)
 
-                # Get response from GPT-3
-                gpt_prompt = f"Summarize what is mentioned in following links: {urls}"
-                message = gpt.gpt_response(gpt_prompt)
-                message = message.strip()
+    #             # Get response from GPT-3
+    #             gpt_prompt = f"Summarize what is mentioned in following links: {urls}"
+    #             message = gpt.gpt_response(gpt_prompt)
+    #             message = message.strip()
 
-                search_data = {
-                    'searchTerm': session.title,
-                    'message': message,
-                    'urls': urls,
-                }
-                return Response({'status': status, 'search_data': search_data})
-            except Exception as e:
-                return Response({'status': status})
-        else:
-            return Response({'status': status})
+    #             search_data = {
+    #                 'searchTerm': session.title,
+    #                 'message': message,
+    #                 'urls': urls,
+    #             }
+    #             return Response({'status': status, 'search_data': search_data})
+    #         except Exception as e:
+    #             return Response({'status': status})
+    #     else:
+    #         return Response({'status': status})
 
 def convert_to_list(s: str) -> list:
     """Convert string to list
