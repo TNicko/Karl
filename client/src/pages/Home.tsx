@@ -20,7 +20,7 @@ class Home extends React.Component {
     taskId: null,
     sessionId: null,
   };
-  statusInterval: NodeJS.Timer = setInterval(() => {}, 0);
+  statusInterval = setInterval(() => {}, 0);
 
   handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
